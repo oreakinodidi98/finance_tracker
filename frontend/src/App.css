@@ -1,0 +1,411 @@
+/* Color Variables */
+:root {
+  --primary-green: #2ecc71;
+  --dark-green: #27ae60;
+  --light-green: #e8f5e8;
+  --success-green: #28a745;
+  --danger-red: #dc3545;
+  --warning-orange: #fd7e14;
+  --dark-gray: #2c3e50;
+  --light-gray: #ecf0f1;
+  --white: #ffffff;
+  --black: #000000;
+  --text-dark: #2c3e50;
+  --text-light: #7f8c8d;
+  --border-color: #bdc3c7;
+  --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, var(--light-green) 0%, var(--white) 100%);
+  color: var(--text-dark);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Main App Container */
+.App {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header Styles */
+h1, h2, h3 {
+  color: var(--dark-gray);
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+h1::after {
+  content: '';
+  display: block;
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-green), var(--dark-green));
+  margin: 10px auto;
+  border-radius: 2px;
+}
+
+h2 {
+  font-size: 1.8rem;
+  color: var(--dark-green);
+  margin-bottom: 1.5rem;
+}
+
+/* Button Styles */
+button {
+  background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+  color: var(--white);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+  background: linear-gradient(135deg, var(--dark-green), var(--primary-green));
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Add Transaction Button */
+.add-transaction-btn {
+  display: block;
+  margin: 30px auto;
+  padding: 15px 30px;
+  font-size: 18px;
+  background: linear-gradient(135deg, var(--success-green), var(--primary-green));
+}
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 30px 0;
+  background: var(--white);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  animation: fadeInUp 0.6s ease;
+}
+
+th {
+  background: linear-gradient(135deg, var(--dark-gray), var(--text-dark));
+  color: var(--white);
+  padding: 16px;
+  text-align: left;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 14px;
+}
+
+td {
+  padding: 16px;
+  border-bottom: 1px solid var(--light-gray);
+  transition: background-color 0.3s ease;
+}
+
+tr:hover {
+  background-color: var(--light-green);
+  transform: scale(1.01);
+  transition: all 0.3s ease;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+/* Transaction Type Styling */
+td:nth-child(4) {
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+tr:has(td:nth-child(4):contains("income")) {
+  border-left: 4px solid var(--success-green);
+}
+
+tr:has(td:nth-child(4):contains("expense")) {
+  border-left: 4px solid var(--danger-red);
+}
+
+/* Amount Styling */
+td:nth-child(3) {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+/* Modal Styles */
+.Modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+  animation: fadeIn 0.3s ease;
+}
+
+.ModalContent {
+  background: var(--white);
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+  position: relative;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideInScale 0.4s ease;
+}
+
+.CloseButton {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.CloseButton:hover {
+  color: var(--danger-red);
+  background: var(--light-gray);
+  transform: rotate(90deg);
+}
+
+/* Form Styles */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+input, select {
+  padding: 14px 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background: var(--white);
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
+  transform: translateY(-2px);
+}
+
+input::placeholder {
+  color: var(--text-light);
+}
+
+select {
+  cursor: pointer;
+}
+
+/* Form Labels */
+form > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+label {
+  font-weight: 600;
+  color: var(--text-dark);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Action Buttons in Table */
+td button {
+  padding: 6px 12px;
+  font-size: 12px;
+  margin: 0 4px;
+  border-radius: 4px;
+}
+
+td button:first-of-type {
+  background: linear-gradient(135deg, var(--warning-orange), #e67e22);
+}
+
+td button:last-of-type {
+  background: linear-gradient(135deg, var(--danger-red), #c0392b);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .App {
+    padding: 10px;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  table {
+    font-size: 14px;
+  }
+  
+  th, td {
+    padding: 10px 8px;
+  }
+  
+  .ModalContent {
+    padding: 20px;
+    margin: 20px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  table {
+    font-size: 12px;
+  }
+  
+  th, td {
+    padding: 8px 4px;
+  }
+  
+  .ModalContent {
+    padding: 15px;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Loading States */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--light-gray);
+  border-top: 4px solid var(--primary-green);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Success/Error Messages */
+.success-message {
+  background: var(--light-green);
+  color: var(--success-green);
+  padding: 12px 20px;
+  border-radius: 8px;
+  border-left: 4px solid var(--success-green);
+  margin: 20px 0;
+}
+
+.error-message {
+  background: #ffebee;
+  color: var(--danger-red);
+  padding: 12px 20px;
+  border-radius: 8px;
+  border-left: 4px solid var(--danger-red);
+  margin: 20px 0;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--light-gray);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-green);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--dark-green);
+}
