@@ -46,6 +46,12 @@ const Navbar = () => {
           >
             📂 Categories
           </Link>
+          <Link 
+            to="/chatbot" 
+            className={`nav-link ${isActive('/chatbot') ? 'active' : ''}`}
+          >
+            🤖 Assistant
+          </Link>
         </div>
 
         <div className="profile-section">

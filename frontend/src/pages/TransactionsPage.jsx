@@ -93,17 +93,7 @@ const onUpdateTransaction = () => {
 };
 
   return (
-  //   <>
-  //   <TransactionList transactions={transactions} />
-  //   < button onClick={openCreateModal}>Add Transaction</button>
-  //   {isModalOpen && <div className="Modal">
-  //     <div className="ModalContent">
-  //       <span className="CloseButton" onClick={closeModal}>&times;</span>
-  //       <TransactionForm />
-  //     </div>
-  //   </div>}
-  //   </>
-  // );
+  
   <div className="App">
       <h1>💰 Finance Tracker</h1>
 

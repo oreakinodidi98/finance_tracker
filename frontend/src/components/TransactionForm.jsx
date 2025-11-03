@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 const TransactionForm = ({ existingTransaction={}, updateCallback }) => {
   // form state for each field
-  const [description, setDescription] = useState(existingTransaction?.description || "");
+const [description, setDescription] = useState(existingTransaction?.description || "");
 const [amount, setAmount] = useState(existingTransaction?.amount || "");
 const [transactionType, setTransactionType] = useState(existingTransaction?.transaction_type || "expense");
 const [transactionDate, setTransactionDate] = useState(existingTransaction?.transaction_date || "");
