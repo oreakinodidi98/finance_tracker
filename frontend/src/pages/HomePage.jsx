@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import '../styles/HomePage.css'
+import '../styles/homepage.css'
 
 const HomePage = () => {
   const [stats, setStats] = useState({

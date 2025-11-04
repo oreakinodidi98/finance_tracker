@@ -1,0 +1,108 @@
+version: '3.8'
+
+# Define all the services (containers) we need
+services:
+  
+  # PostgreSQL Database Service
+  database:
+    image: postgres:15-alpine  # Use official PostgreSQL image
+    container_name: finance_tracker_db
+    restart: unless-stopped    # Restart if it crashes, but not if manually stopped
+    environment:
+      # These come from your .env file
+      POSTGRES_DB: ${POSTGRES_DB:-finance_tracker}
+      POSTGRES_USER: ${POSTGRES_USER:-finance_user} 
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-your_secure_password}
+    volumes:
+      # Persist database data even if container is deleted
+      - postgres_data:/var/lib/postgresql/data
+      # Optional: Add initialization scripts
+      - ./database/init:/docker-entrypoint-initdb.d
+    ports:
+      # Expose database port for development/debugging
+      - "5432:5432"
+    networks:
+      - finance_network
+    healthcheck:
+      # Test if database is ready to accept connections
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-finance_user}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Backend API Service  
+  backend:
+    build:
+      context: ./backend     # Build from backend folder
+      dockerfile: Dockerfile
+    container_name: finance_tracker_backend
+    restart: unless-stopped
+    environment:
+      # Flask Configuration
+      FLASK_ENV: ${FLASK_ENV:-development}
+      FLASK_DEBUG: ${FLASK_DEBUG:-true}
+      
+      # Database connection - notice how we reference the 'database' service
+      DATABASE_URL: postgresql://${POSTGRES_USER:-finance_user}:${POSTGRES_PASSWORD:-your_secure_password}@database:5432/${POSTGRES_DB:-finance_tracker}
+      
+      # Azure AI Configuration (from your .env file)
+      AZURE_AIPROJECT_ENDPOINT: ${AZURE_AIPROJECT_ENDPOINT}
+      AZURE_AI_CHAT_DEPLOYMENT_NAME: ${AZURE_AI_CHAT_DEPLOYMENT_NAME}
+      AZURE_AI_EMBED_DEPLOYMENT_NAME: ${AZURE_AI_EMBED_DEPLOYMENT_NAME}
+      AZURE_AI_EMBED_DIMENSIONS: ${AZURE_AI_EMBED_DIMENSIONS:-1536}
+      AZURE_AI_API_KEY: ${AZURE_AI_API_KEY}
+      CHAT_MODEL_ENDPOINT: ${CHAT_MODEL_ENDPOINT}
+      CHAT_MODEL: ${CHAT_MODEL}
+      AZURE_OPENAI_ENDPOINT: ${AZURE_OPENAI_ENDPOINT}
+      AZURE_OPENAI_KEY: ${AZURE_OPENAI_KEY}
+      
+      # Azure Search Configuration  
+      AZURE_AI_SEARCH_ENDPOINT: ${AZURE_AI_SEARCH_ENDPOINT}
+      AZURE_AI_SEARCH_INDEX_NAME: ${AZURE_AI_SEARCH_INDEX_NAME}
+      AZURE_SEARCH_API_KEY: ${AZURE_SEARCH_API_KEY}
+      AZURE_SEARCH_MODEL: ${AZURE_SEARCH_MODEL}
+    ports:
+      - "5000:5000"  # Expose backend API
+    volumes:
+      # Mount logs directory for debugging
+      - ./backend/logs:/app/logs
+    depends_on:
+      # Wait for database to be healthy before starting backend
+      database:
+        condition: service_healthy
+    networks:
+      - finance_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Frontend Service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: finance_tracker_frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"    # Main application port
+    depends_on:
+      - backend    # Wait for backend to start
+    networks:
+      - finance_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+# Define persistent storage volumes
+volumes:
+  postgres_data:
+    driver: local  # Store on local machine
+
+# Define isolated network for all services
+networks:
+  finance_network:
+    driver: bridge  # Default Docker network type

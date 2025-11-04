@@ -353,6 +353,26 @@ def generate_simple_response(message):
     else:
         return "I can help with budgeting, saving, expenses, and basic financial advice. What would you like to know?"
 
+# Add this route for health checks
+
+@app.route('/health', methods=['GET'])
+def health_check():
+    """Health check endpoint for Docker"""
+    try:
+        # Test database connection
+        db.session.execute('SELECT 1')
+        return jsonify({
+            'status': 'healthy',
+            'database': 'connected',
+            'timestamp': datetime.now().isoformat()
+        }), 200
+    except Exception as e:
+        return jsonify({
+            'status': 'unhealthy',
+            'error': str(e),
+            'timestamp': datetime.now().isoformat()
+        }), 500
+
 # run flask app
 if __name__ == '__main__':
     # initiate db
