@@ -12,7 +12,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="nav-container">
         <Link to="/" className="nav-logo">
-          💰 Finance Tracker
+          💰 Money Talks
         </Link>
         
         <div className="nav-links">

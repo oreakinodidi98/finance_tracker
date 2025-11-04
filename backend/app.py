@@ -2,12 +2,12 @@ from flask import Flask, request, jsonify
 from config import app, db
 from models import User, Category, Transaction, Budget, Goal
 from datetime import datetime
-
+import asyncio
 # Routes to register and login users
 
 
 # routes to create, read, update, delete categories
-@app.route('/categories', methods=['POST'])
+@app.route('/categories', methods=['GET'])
 ## get a list of all categories
 def get_categories():
     categories = Category.query.all()
@@ -257,7 +257,101 @@ def delete_goal(goal_id):
 
 # routes to get budgeting features
 
+# routes for chatbot
 
+@app.route('/chat', methods=['POST'])
+def chat_with_rag():
+    """Handle chat requests and integrate with RAG agent"""
+    try:
+        if not request.json:
+            return jsonify({'error': 'Request must contain JSON data'}), 400
+        
+        user_message = request.json.get('message')
+        if not user_message:
+            return jsonify({'error': 'Message is required'}), 400
+
+        print(f"🔄 Received chat message: {user_message}")
+        
+        # Import the RAG agent function
+        try:
+            from interactive_rag_agent import agent
+            
+            if agent is None:
+                print("⚠️ RAG agent is None, falling back to simple responses")
+                raise ImportError("Agent not initialized")
+            
+            print("✅ RAG agent imported successfully, processing...")
+            
+            # Run the RAG agent asynchronously
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            agent_response = loop.run_until_complete(agent.run(user_message))
+            loop.close()
+            
+            print(f"🔍 Agent response type: {type(agent_response)}")
+            print(f"🔍 Agent response object: {agent_response}")
+            
+            # Extract the actual text from the AgentRunResponse object
+            if hasattr(agent_response, 'content'):
+                response_text = agent_response.content
+            elif hasattr(agent_response, 'text'):
+                response_text = agent_response.text
+            elif hasattr(agent_response, 'message'):
+                response_text = agent_response.message
+            elif hasattr(agent_response, 'result'):
+                response_text = agent_response.result
+            elif hasattr(agent_response, 'output'):
+                response_text = agent_response.output
+            else:
+                # Try to convert to string as fallback
+                response_text = str(agent_response)
+            
+            print(f"✅ Extracted response text: {response_text[:100]}...")
+            
+            return jsonify({
+                'response': response_text,
+                'source': 'rag_agent'
+            }), 200
+            
+        except ImportError as e:
+            print(f"❌ RAG agent import failed: {e}")
+            # Fallback to simple rule-based responses
+            response = generate_simple_response(user_message)
+            return jsonify({
+                'response': response,
+                'source': 'fallback'
+            }), 200
+        except Exception as e:
+            print(f"❌ RAG agent execution failed: {e}")
+            import traceback
+            traceback.print_exc()
+            # Fallback to simple rule-based responses
+            response = generate_simple_response(user_message)
+            return jsonify({
+                'response': response,
+                'source': 'fallback'
+            }), 200
+            
+    except Exception as e:
+        print(f"❌ Error in chat endpoint: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': 'Internal server error'}), 500
+
+def generate_simple_response(message):
+    """Fallback function for simple responses when RAG is not available"""
+    message = message.lower()
+    
+    if 'budget' in message:
+        return "For budgeting, try the 50/30/20 rule: 50% needs, 30% wants, 20% savings. Track your expenses regularly!"
+    elif 'save' in message:
+        return "Start with an emergency fund covering 3-6 months of expenses. Then automate your savings!"
+    elif 'expense' in message:
+        return "Categorize your expenses into needs vs wants. Use this app's transaction feature to track them!"
+    elif 'investment' in message:
+        return "Consider low-cost index funds for long-term investing. Always do your research first!"
+    else:
+        return "I can help with budgeting, saving, expenses, and basic financial advice. What would you like to know?"
 
 # run flask app
 if __name__ == '__main__':

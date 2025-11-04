@@ -1,5 +1,5 @@
 from config import app, db
-from models import User, Category, Goal
+from models import User, Category, Goal, Transaction  # Add Transaction import
 from datetime import datetime, timedelta
 import random
 
@@ -13,6 +13,7 @@ with app.app_context():
         print(f"Current users: {User.query.count()}")
         print(f"Current categories: {Category.query.count()}")
         print(f"Current goals: {Goal.query.count()}")
+        print(f"Current transactions: {Transaction.query.count()}")
         
         # Create test user with all required fields
         existing_user = User.query.filter_by(id=1).first()
@@ -76,7 +77,130 @@ with app.app_context():
                 print(f"✅ Created category: {cat_data['name']} ({cat_data['type']})")
             else:
                 print(f"ℹ️  Category exists: {existing_cat.name}")
+
+        # Commit categories first so we can use their IDs for transactions
+        db.session.commit()
+
+        # Create realistic transactions for the past 3 months
+        transactions_data = []
         
+        # Get category IDs for easier reference
+        salary_cat = Category.query.filter_by(name='Salary', user_id=1).first()
+        groceries_cat = Category.query.filter_by(name='Groceries', user_id=1).first()
+        transport_cat = Category.query.filter_by(name='Transport', user_id=1).first()
+        dining_cat = Category.query.filter_by(name='Dining Out', user_id=1).first()
+        entertainment_cat = Category.query.filter_by(name='Entertainment', user_id=1).first()
+        shopping_cat = Category.query.filter_by(name='Shopping', user_id=1).first()
+        utilities_cat = Category.query.filter_by(name='Utilities', user_id=1).first()
+        freelance_cat = Category.query.filter_by(name='Freelance', user_id=1).first()
+        
+        # Monthly salary (income)
+        for month_offset in range(3):  # Last 3 months
+            salary_date = datetime.now().replace(day=1) - timedelta(days=30 * month_offset)
+            transactions_data.append({
+                'description': 'Monthly Salary',
+                'amount': 3500.00,
+                'transaction_type': 'income',
+                'category_id': salary_cat.id if salary_cat else 1,
+                'transaction_date': salary_date
+            })
+        
+        # Freelance income (occasional)
+        transactions_data.extend([
+            {
+                'description': 'Web Development Project',
+                'amount': 800.00,
+                'transaction_type': 'income',
+                'category_id': freelance_cat.id if freelance_cat else 2,
+                'transaction_date': datetime.now() - timedelta(days=45)
+            },
+            {
+                'description': 'Logo Design Work',
+                'amount': 300.00,
+                'transaction_type': 'income',
+                'category_id': freelance_cat.id if freelance_cat else 2,
+                'transaction_date': datetime.now() - timedelta(days=20)
+            }
+        ])
+        
+        # Regular expenses
+        expense_transactions = [
+            # Groceries (weekly)
+            {'desc': 'Tesco Weekly Shop', 'amount': 85.50, 'cat': groceries_cat, 'days_ago': 3},
+            {'desc': 'ASDA Groceries', 'amount': 92.30, 'cat': groceries_cat, 'days_ago': 10},
+            {'desc': 'Sainsbury\'s Shop', 'amount': 78.90, 'cat': groceries_cat, 'days_ago': 17},
+            {'desc': 'M&S Food Hall', 'amount': 45.60, 'cat': groceries_cat, 'days_ago': 24},
+            {'desc': 'Local Market', 'amount': 35.20, 'cat': groceries_cat, 'days_ago': 31},
+            {'desc': 'Waitrose Shopping', 'amount': 105.40, 'cat': groceries_cat, 'days_ago': 38},
+            
+            # Transport
+            {'desc': 'Oyster Card Top-up', 'amount': 40.00, 'cat': transport_cat, 'days_ago': 5},
+            {'desc': 'Petrol Station', 'amount': 55.80, 'cat': transport_cat, 'days_ago': 12},
+            {'desc': 'Train Ticket', 'amount': 28.50, 'cat': transport_cat, 'days_ago': 25},
+            {'desc': 'Uber Ride', 'amount': 15.30, 'cat': transport_cat, 'days_ago': 8},
+            
+            # Dining Out
+            {'desc': 'Pizza Express', 'amount': 32.50, 'cat': dining_cat, 'days_ago': 2},
+            {'desc': 'Local Pub Lunch', 'amount': 18.90, 'cat': dining_cat, 'days_ago': 7},
+            {'desc': 'Chinese Takeaway', 'amount': 22.40, 'cat': dining_cat, 'days_ago': 14},
+            {'desc': 'Costa Coffee', 'amount': 8.75, 'cat': dining_cat, 'days_ago': 6},
+            {'desc': 'McDonald\'s', 'amount': 12.30, 'cat': dining_cat, 'days_ago': 21},
+            
+            # Entertainment
+            {'desc': 'Netflix Subscription', 'amount': 15.99, 'cat': entertainment_cat, 'days_ago': 1},
+            {'desc': 'Cinema Tickets', 'amount': 24.00, 'cat': entertainment_cat, 'days_ago': 9},
+            {'desc': 'Spotify Premium', 'amount': 9.99, 'cat': entertainment_cat, 'days_ago': 15},
+            {'desc': 'Game Purchase', 'amount': 49.99, 'cat': entertainment_cat, 'days_ago': 35},
+            
+            # Shopping
+            {'desc': 'Amazon Purchase', 'amount': 67.89, 'cat': shopping_cat, 'days_ago': 4},
+            {'desc': 'H&M Clothing', 'amount': 45.50, 'cat': shopping_cat, 'days_ago': 18},
+            {'desc': 'John Lewis', 'amount': 89.20, 'cat': shopping_cat, 'days_ago': 28},
+            {'desc': 'Argos Electronics', 'amount': 125.00, 'cat': shopping_cat, 'days_ago': 42},
+            
+            # Utilities
+            {'desc': 'Electricity Bill', 'amount': 87.50, 'cat': utilities_cat, 'days_ago': 30},
+            {'desc': 'Gas Bill', 'amount': 65.30, 'cat': utilities_cat, 'days_ago': 32},
+            {'desc': 'Internet Bill', 'amount': 35.00, 'cat': utilities_cat, 'days_ago': 15},
+        ]
+        
+        # Convert expense transactions to proper format
+        for exp in expense_transactions:
+            transactions_data.append({
+                'description': exp['desc'],
+                'amount': exp['amount'],
+                'transaction_type': 'expense',
+                'category_id': exp['cat'].id if exp['cat'] else 1,
+                'transaction_date': datetime.now() - timedelta(days=exp['days_ago'])
+            })
+        
+        # Create transactions
+        transactions_created = 0
+        for trans_data in transactions_data:
+            # Check if transaction already exists
+            existing_trans = Transaction.query.filter_by(
+                description=trans_data['description'],
+                user_id=1,
+                transaction_date=trans_data['transaction_date']
+            ).first()
+            
+            if not existing_trans:
+                transaction = Transaction(
+                    user_id=1,
+                    description=trans_data['description'],
+                    amount=trans_data['amount'],
+                    transaction_type=trans_data['transaction_type'],
+                    category_id=trans_data['category_id'],
+                    transaction_date=trans_data['transaction_date']
+                )
+                db.session.add(transaction)
+                transactions_created += 1
+                
+                type_emoji = "💰" if trans_data['transaction_type'] == 'income' else "💸"
+                print(f"✅ Created transaction: {type_emoji} {trans_data['description']} - £{trans_data['amount']}")
+            else:
+                print(f"ℹ️  Transaction exists: {existing_trans.description}")
+
         # Create realistic savings goals
         savings_goals = [
             {
@@ -84,8 +208,8 @@ with app.app_context():
                 'description': 'Build up 6 months of expenses for emergencies',
                 'target_amount': 10000.00,
                 'current_amount': 2500.00,
-                'deadline': datetime.now() + timedelta(days=365),  # 1 year from now
-                'priority': 1,  # High priority
+                'deadline': datetime.now() + timedelta(days=365),
+                'priority': 1,
                 'status': 'in_progress'
             },
             {
@@ -93,8 +217,8 @@ with app.app_context():
                 'description': 'Save for a 2-week trip to Tokyo and Kyoto',
                 'target_amount': 4500.00,
                 'current_amount': 800.00,
-                'deadline': datetime.now() + timedelta(days=240),  # 8 months from now
-                'priority': 2,  # Medium priority
+                'deadline': datetime.now() + timedelta(days=240),
+                'priority': 2,
                 'status': 'in_progress'
             },
             {
@@ -102,8 +226,8 @@ with app.app_context():
                 'description': 'MacBook Pro for work and personal projects',
                 'target_amount': 2500.00,
                 'current_amount': 1200.00,
-                'deadline': datetime.now() + timedelta(days=90),  # 3 months from now
-                'priority': 2,  # Medium priority
+                'deadline': datetime.now() + timedelta(days=90),
+                'priority': 2,
                 'status': 'in_progress'
             },
             {
@@ -111,8 +235,8 @@ with app.app_context():
                 'description': 'Save for a deposit on first home purchase',
                 'target_amount': 50000.00,
                 'current_amount': 8500.00,
-                'deadline': datetime.now() + timedelta(days=1095),  # 3 years from now
-                'priority': 1,  # High priority
+                'deadline': datetime.now() + timedelta(days=1095),
+                'priority': 1,
                 'status': 'in_progress'
             },
             {
@@ -120,8 +244,8 @@ with app.app_context():
                 'description': 'Save to replace old car with a reliable used one',
                 'target_amount': 15000.00,
                 'current_amount': 3200.00,
-                'deadline': datetime.now() + timedelta(days=450),  # 15 months from now
-                'priority': 2,  # Medium priority
+                'deadline': datetime.now() + timedelta(days=450),
+                'priority': 2,
                 'status': 'in_progress'
             },
             {
@@ -129,17 +253,17 @@ with app.app_context():
                 'description': 'Save for dream wedding celebration',
                 'target_amount': 25000.00,
                 'current_amount': 5800.00,
-                'deadline': datetime.now() + timedelta(days=600),  # 20 months from now
-                'priority': 1,  # High priority
+                'deadline': datetime.now() + timedelta(days=600),
+                'priority': 1,
                 'status': 'in_progress'
             },
             {
                 'name': 'Online Course',
                 'description': 'Professional development certification course',
                 'target_amount': 800.00,
-                'current_amount': 800.00,  # Already completed!
-                'deadline': datetime.now() - timedelta(days=30),  # Completed last month
-                'priority': 3,  # Low priority
+                'current_amount': 800.00,
+                'deadline': datetime.now() - timedelta(days=30),
+                'priority': 3,
                 'status': 'completed'
             },
             {
@@ -147,8 +271,8 @@ with app.app_context():
                 'description': 'Ergonomic desk, chair, and lighting for home office',
                 'target_amount': 1200.00,
                 'current_amount': 450.00,
-                'deadline': datetime.now() + timedelta(days=60),  # 2 months from now
-                'priority': 2,  # Medium priority
+                'deadline': datetime.now() + timedelta(days=60),
+                'priority': 2,
                 'status': 'in_progress'
             },
             {
@@ -156,8 +280,8 @@ with app.app_context():
                 'description': 'Initial investment in diversified portfolio',
                 'target_amount': 5000.00,
                 'current_amount': 1800.00,
-                'deadline': datetime.now() + timedelta(days=180),  # 6 months from now
-                'priority': 2,  # Medium priority
+                'deadline': datetime.now() + timedelta(days=180),
+                'priority': 2,
                 'status': 'in_progress'
             },
             {
@@ -165,15 +289,14 @@ with app.app_context():
                 'description': 'Budget for family Christmas presents',
                 'target_amount': 600.00,
                 'current_amount': 150.00,
-                'deadline': datetime(2025, 12, 15),  # Christmas 2025
-                'priority': 3,  # Low priority
+                'deadline': datetime(2025, 12, 15),
+                'priority': 3,
                 'status': 'in_progress'
             }
         ]
         
         goals_created = 0
         for goal_data in savings_goals:
-            # Check if goal already exists (by name and user_id)
             existing_goal = Goal.query.filter_by(name=goal_data['name'], user_id=1).first()
             if not existing_goal:
                 goal = Goal(
@@ -189,7 +312,6 @@ with app.app_context():
                 db.session.add(goal)
                 goals_created += 1
                 
-                # Calculate progress percentage
                 progress = (goal_data['current_amount'] / goal_data['target_amount']) * 100
                 print(f"✅ Created goal: {goal_data['name']} - £{goal_data['current_amount']}/£{goal_data['target_amount']} ({progress:.1f}%)")
             else:
@@ -197,52 +319,35 @@ with app.app_context():
         
         # Commit all changes
         db.session.commit()
-        print(f"\n🎉 Successfully created {created_count} new categories and {goals_created} new goals!")
+        print(f"\n🎉 Successfully created {created_count} new categories, {transactions_created} new transactions, and {goals_created} new goals!")
+        
+        # Calculate and display financial summary
+        all_transactions = Transaction.query.filter_by(user_id=1).all()
+        total_income = sum(float(t.amount) for t in all_transactions if t.transaction_type == 'income')
+        total_expenses = sum(float(t.amount) for t in all_transactions if t.transaction_type == 'expense')
+        net_balance = total_income - total_expenses
+        
+        print(f"\n💰 Financial Summary:")
+        print(f"   Total Income: £{total_income:.2f}")
+        print(f"   Total Expenses: £{total_expenses:.2f}")
+        print(f"   Net Balance: £{net_balance:.2f}")
+        
+        balance_status = "🟢 Positive" if net_balance > 0 else "🔴 Negative" if net_balance < 0 else "🟡 Neutral"
+        print(f"   Status: {balance_status}")
         
         # Show final summary
         print(f"\n📊 Final Database Summary:")
         print(f"👥 Total Users: {User.query.count()}")
         print(f"📂 Total Categories: {Category.query.count()}")
+        print(f"💳 Total Transactions: {Transaction.query.count()}")
         print(f"🎯 Total Goals: {Goal.query.count()}")
         
-        # List all users
-        print(f"\n👥 Users:")
-        for user in User.query.all():
-            print(f"  • ID: {user.id} | {user.first_name} {user.last_name} (@{user.username}) | {user.email}")
-            
-        # List categories by type
-        print(f"\n💸 Expense Categories:")
-        expense_cats = Category.query.filter_by(type='expense').all()
-        for cat in expense_cats:
-            print(f"  • ID: {cat.id} | {cat.name}")
-            
-        print(f"\n💰 Income Categories:")
-        income_cats = Category.query.filter_by(type='income').all()
-        for cat in income_cats:
-            print(f"  • ID: {cat.id} | {cat.name}")
-            
-        # List savings goals with progress
-        print(f"\n🎯 Savings Goals:")
-        goals = Goal.query.filter_by(user_id=1).order_by(Goal.priority, Goal.deadline).all()
-        for goal in goals:
-            progress = (float(goal.current_amount) / float(goal.target_amount)) * 100
-            status_emoji = "✅" if goal.status == "completed" else "🔄" if goal.status == "in_progress" else "⏸️"
-            priority_text = {1: "🔥 High", 2: "🟡 Medium", 3: "🟢 Low"}.get(goal.priority, "❓ Unknown")
-            
-            days_left = (goal.deadline - datetime.now()).days
-            deadline_text = f"({days_left} days)" if days_left > 0 else "(Overdue)" if days_left < 0 else "(Today)"
-            
-            print(f"  • ID: {goal.id} | {status_emoji} {goal.name}")
-            print(f"    Progress: £{goal.current_amount}/£{goal.target_amount} ({progress:.1f}%)")
-            print(f"    Priority: {priority_text} | Deadline: {goal.deadline.strftime('%Y-%m-%d')} {deadline_text}")
-            print(f"    Description: {goal.description}")
-            print()
-            
-        print(f"🎯 You can now:")
-        print(f"   - Create transactions with User ID: 1")
+        print(f"\n🎯 You can now:")
+        print(f"   - View real financial data on your Home page")
+        print(f"   - See transactions with User ID: 1")
         print(f"   - Use Category IDs: 1 to {Category.query.count()}")
         print(f"   - Track progress on {Goal.query.count()} savings goals")
-        print(f"   - View goals on your Goals page!")
+        print(f"   - Your total balance will show: £{net_balance:.2f}")
             
     except Exception as e:
         db.session.rollback()
