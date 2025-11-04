@@ -274,7 +274,7 @@ def chat_with_rag():
         
         # Import the RAG agent function
         try:
-            from interactive_rag_agent import agent
+            from agent import agent
             
             if agent is None:
                 print("⚠️ RAG agent is None, falling back to simple responses")

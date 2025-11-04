@@ -172,7 +172,7 @@ const ChatbotPage = () => {
           <h1>🤖 Finance Assistant</h1>
           <p>
             {isRagEnabled ? 
-              "AI-powered financial advisor with RAG capabilities" : 
+              "AI-powered financial advisor" : 
               "Financial advisor (Simple mode)"
             }
           </p>
