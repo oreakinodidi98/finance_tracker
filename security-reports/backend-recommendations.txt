@@ -1,0 +1,104 @@
+    i New version 1.18.4 available (installed version is 1.18.3) at https://github.com/docker/scout-cli
+    v SBOM of image already cached, 393 packages indexed
+
+    i Base image was auto-detected. To get more accurate recommendations, build images with max-mode provenance attestations.
+      Review https://docs.docker.com/build/attestations/slsa-provenance/ for more information.
+      Alternatively, use  docker scout recommendations --tag <base image tag>  to pass a specific base image tag.
+
+  Target   Ôöé  finance_tracker-backend:latest   
+    digest Ôöé  590ee50ffff0                     
+
+## Recommended fixes
+
+  Base image is  python:3.11-slim 
+
+  Name            Ôöé  3.11-slim                                                                 
+  Digest          Ôöé  sha256:b596083aa14d47c78a652138aa9b98607585499d7c7ec343ae378f6c5770822d   
+  Vulnerabilities Ôöé    0C     0H     2M    20L                                                 
+  Pushed          Ôöé 12 hours ago                                                               
+  Size            Ôöé 45 MB                                                                      
+  Packages        Ôöé 141                                                                        
+  Runtime         Ôöé 3.11.14                                                                    
+
+                                                                    
+  Ôöé The base image is also available under the supported tag(s)     
+  `3.11-                                                            
+  Ôöé slim-trixie`, `3.11.14-slim`, `3.11.14-slim-trixie`. If you want to
+  Ôöé display recommendations specifically for a different tag, please
+  Ôöé re-run the command using the `--tag` flag.                       
+
+
+
+Refresh base image
+  Rebuild the image using a newer base image version. Updating this may result in breaking changes.
+
+  v This image version is up to date.
+
+
+Change base image
+  The list displays new recommended tags in descending order, where the top results are rated as most suitable.
+
+
+              Tag              Ôöé                            Details                            Ôöé    Pushed    Ôöé       Vulnerabilities        
+ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔö╝ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔö╝ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔö╝ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+   3.13-slim                   Ôöé Benefits:                                                     Ôöé 12 hours ago Ôöé    0C     0H     2M    20L   
+  Minor runtime version update Ôöé ÔÇó Same OS detected                                            Ôöé              Ôöé                              
+  Also known as:               Ôöé ÔÇó Minor runtime version update                                Ôöé              Ôöé                              
+  ÔÇó 3.13.9-slim                Ôöé ÔÇó Image is smaller by 2.5 MB                                  Ôöé              Ôöé                              
+  ÔÇó 3.13-slim-trixie           Ôöé ÔÇó Image contains 17 fewer packages                            Ôöé              Ôöé                              
+  ÔÇó 3.13.9-slim-trixie         Ôöé ÔÇó Tag was pushed more recently                                Ôöé              Ôöé                              
+                               Ôöé ÔÇó Image has same number of vulnerabilities                    Ôöé              Ôöé                              
+                               Ôöé ÔÇó Tag is using slim variant                                   Ôöé              Ôöé                              
+                               Ôöé                                                               Ôöé              Ôöé                              
+                               Ôöé Image details:                                                Ôöé              Ôöé                              
+                               Ôöé ÔÇó Size: 43 MB                                                 Ôöé              Ôöé                              
+                               Ôöé ÔÇó Runtime: 3.13.9                                             Ôöé              Ôöé                              
+                               Ôöé                                                               Ôöé              Ôöé                              
+                               Ôöé                                                               Ôöé              Ôöé                              
+                               Ôöé                                                               Ôöé              Ôöé                              
+   3.12-slim                   Ôöé Benefits:                                                     Ôöé 12 hours ago Ôöé    0C     0H     2M    20L   
+  Minor runtime version update Ôöé ÔÇó Same OS detected                                            Ôöé              Ôöé                              
+  Also known as:               Ôöé ÔÇó Minor runtime version update                                Ôöé              Ôöé                              
+  ÔÇó 3.12.12-slim               Ôöé ÔÇó Image is smaller by 2.1 MB                                  Ôöé              Ôöé                              
+  ÔÇó 3.12-slim-trixie           Ôöé ÔÇó Image contains 17 fewer packages                            Ôöé              Ôöé                              
+  ÔÇó 3.12.12-slim-trixie        Ôöé ÔÇó Tag was pushed more recently                                Ôöé              Ôöé                              
+                               Ôöé ÔÇó Image has same number of vulnerabilities                    Ôöé              Ôöé                              
+                               Ôöé ÔÇó Tag is using slim variant                                   Ôöé              Ôöé                              
+                               Ôöé                                                               Ôöé              Ôöé                              
+                               Ôöé Image details:                                                Ôöé              Ôöé                              
+                               Ôöé ÔÇó Size: 43 MB                                                 Ôöé              Ôöé                              
+                               Ôöé ÔÇó Runtime: 3.12.12                                            Ôöé              Ôöé                              
+                               Ôöé                                                               Ôöé              Ôöé                              
+                               Ôöé                                                               Ôöé              Ôöé                              
+                               Ôöé                                                               Ôöé              Ôöé                              
+   3.14-slim                   Ôöé Benefits:                                                     Ôöé 13 hours ago Ôöé    0C     0H     2M    20L   
+  Minor runtime version update Ôöé ÔÇó Same OS detected                                            Ôöé              Ôöé                              
+  Also known as:               Ôöé ÔÇó Minor runtime version update                                Ôöé              Ôöé                              
+  ÔÇó 3.14.0-slim                Ôöé ÔÇó Image is smaller by 2.1 MB                                  Ôöé              Ôöé                              
+  ÔÇó 3-slim                     Ôöé ÔÇó Image contains 17 fewer packages                            Ôöé              Ôöé                              
+  ÔÇó slim                       Ôöé ÔÇó Image has same number of vulnerabilities                    Ôöé              Ôöé                              
+  ÔÇó slim-trixie                Ôöé ÔÇó Tag is using slim variant                                   Ôöé              Ôöé                              
+  ÔÇó 3-slim-trixie              Ôöé                                                               Ôöé              Ôöé                              
+  ÔÇó 3.14-slim-trixie           Ôöé Image details:                                                Ôöé              Ôöé                              
+  ÔÇó 3.14.0-slim-trixie         Ôöé ÔÇó Size: 43 MB                                                 Ôöé              Ôöé                              
+                               Ôöé ÔÇó Runtime: 3.14.0                                             Ôöé              Ôöé                              
+                               Ôöé                                                               Ôöé              Ôöé                              
+                               Ôöé                                                               Ôöé              Ôöé                              
+                               Ôöé                                                               Ôöé              Ôöé                              
+   alpine                      Ôöé Benefits:                                                     Ôöé 3 weeks ago  Ôöé    0C     0H     1M     2L   
+  Tag is preferred tag         Ôöé ÔÇó Minor runtime version update                                Ôöé              Ôöé                  -1    -18   
+  Also known as:               Ôöé ÔÇó Image is smaller by 27 MB                                   Ôöé              Ôöé                              
+  ÔÇó alpine3.22                 Ôöé ÔÇó Image contains 100 fewer packages                           Ôöé              Ôöé                              
+  ÔÇó 3.14.0-alpine              Ôöé ÔÇó Tag is preferred tag                                        Ôöé              Ôöé                              
+  ÔÇó 3.14.0-alpine3.22          Ôöé ÔÇó Image introduces no new vulnerability but removes 19        Ôöé              Ôöé                              
+  ÔÇó 3.14-alpine                Ôöé ÔÇó alpine is the 7th most popular tag with 41K pulls per month Ôöé              Ôöé                              
+  ÔÇó 3.14-alpine3.22            Ôöé                                                               Ôöé              Ôöé                              
+  ÔÇó 3-alpine                   Ôöé Image details:                                                Ôöé              Ôöé                              
+  ÔÇó 3-alpine3.22               Ôöé ÔÇó Size: 18 MB                                                 Ôöé              Ôöé                              
+                               Ôöé ÔÇó Flavor: alpine                                              Ôöé              Ôöé                              
+                               Ôöé ÔÇó OS: 3.22                                                    Ôöé              Ôöé                              
+                               Ôöé ÔÇó Runtime: 3.14.0                                             Ôöé              Ôöé                              
+                               Ôöé                                                               Ôöé              Ôöé                              
+                               Ôöé                                                               Ôöé              Ôöé                              
+                               Ôöé                                                               Ôöé              Ôöé                              
+

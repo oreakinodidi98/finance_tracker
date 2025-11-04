@@ -11,8 +11,8 @@ services:
     environment:
       # These come from your .env file
       POSTGRES_DB: ${POSTGRES_DB:-finance_tracker}
-      POSTGRES_USER: ${POSTGRES_USER:-finance_user} 
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-your_secure_password}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres} 
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-FavourofGod1}
     volumes:
       # Persist database data even if container is deleted
       - postgres_data:/var/lib/postgresql/data
@@ -25,7 +25,7 @@ services:
       - finance_network
     healthcheck:
       # Test if database is ready to accept connections
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-finance_user}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -43,7 +43,7 @@ services:
       FLASK_DEBUG: ${FLASK_DEBUG:-true}
       
       # Database connection - notice how we reference the 'database' service
-      DATABASE_URL: postgresql://${POSTGRES_USER:-finance_user}:${POSTGRES_PASSWORD:-your_secure_password}@database:5432/${POSTGRES_DB:-finance_tracker}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-FavourofGod1}@database:5432/${POSTGRES_DB:-finance_tracker}
       
       # Azure AI Configuration (from your .env file)
       AZURE_AIPROJECT_ENDPOINT: ${AZURE_AIPROJECT_ENDPOINT}

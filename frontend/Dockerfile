@@ -21,7 +21,12 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Serve the application with Nginx
-FROM nginx:alpine
+# Using the latest stable nginx alpine image to minimize vulnerabilities
+FROM nginx:1-alpine
+
+# Add security labels
+LABEL security.scan="enabled"
+LABEL version="1.0"
 
 # Copy custom nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf

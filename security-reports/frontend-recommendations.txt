@@ -1,0 +1,111 @@
+    i New version 1.18.4 available (installed version is 1.18.3) at https://github.com/docker/scout-cli
+    v SBOM of image already cached, 79 packages indexed
+
+    i Base image was auto-detected. To get more accurate recommendations, build images with max-mode provenance attestations.
+      Review https://docs.docker.com/build/attestations/slsa-provenance/ for more information.
+      Alternatively, use  docker scout recommendations --tag <base image tag>  to pass a specific base image tag.
+
+  Target   Ôöé  finance_tracker-frontend:latest   
+    digest Ôöé  ca9f5671c370                      
+
+## Recommended fixes
+
+  Base image is  nginx:1-alpine 
+
+  Name            Ôöé  1-alpine                                                                  
+  Digest          Ôöé  sha256:7e528502b614e1ed9f88e495f2af843c255905e0e549b935fdedd95336e6de8d   
+  Vulnerabilities Ôöé    4C    18H    32M     5L                                                 
+  Pushed          Ôöé 2 years ago                                                                
+  Size            Ôöé 20 MB                                                                      
+  Packages        Ôöé 79                                                                         
+  Flavor          Ôöé alpine                                                                     
+  Runtime         Ôöé 1.25.3                                                                     
+
+                                                                    
+  Ôöé The base image is also available under the supported tag(s)     
+  Ôöé `alpine`, `mainline-alpine`. If you want to display              
+  Ôöé recommendations specifically for a different tag, please re-run  
+  Ôöé the command using the `--tag` flag.                              
+
+
+
+Refresh base image
+  Rebuild the image using a newer base image version. Updating this may result in breaking changes.
+
+
+            Tag            Ôöé                        Details                         Ôöé   Pushed   Ôöé       Vulnerabilities        
+ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔö╝ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔö╝ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔö╝ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+   1-alpine                Ôöé Benefits:                                              Ôöé 6 days ago Ôöé    0C     0H     0M     2L   
+  Newer image for same tag Ôöé ÔÇó Same OS detected                                     Ôöé            Ôöé    -4    -18    -32     -3   
+  Also known as:           Ôöé ÔÇó Minor runtime version update                         Ôöé            Ôöé                              
+  ÔÇó 1.29.3-alpine          Ôöé ÔÇó Newer image for same tag                             Ôöé            Ôöé                              
+  ÔÇó 1.29-alpine            Ôöé ÔÇó Tag was pushed more recently                         Ôöé            Ôöé                              
+  ÔÇó alpine                 Ôöé ÔÇó Image has similar size                               Ôöé            Ôöé                              
+  ÔÇó alpine3.22             Ôöé ÔÇó Image introduces no new vulnerability but removes 57 Ôöé            Ôöé                              
+  ÔÇó 1-alpine3.22           Ôöé ÔÇó Image contains similar number of packages            Ôöé            Ôöé                              
+  ÔÇó 1.29-alpine3.22        Ôöé ÔÇó 1-alpine was pulled 278K times last month            Ôöé            Ôöé                              
+  ÔÇó mainline-alpine        Ôöé                                                        Ôöé            Ôöé                              
+  ÔÇó 1.29.3-alpine3.22      Ôöé Image details:                                         Ôöé            Ôöé                              
+  ÔÇó mainline-alpine3.22    Ôöé ÔÇó Size: 23 MB                                          Ôöé            Ôöé                              
+                           Ôöé ÔÇó Flavor: alpine                                       Ôöé            Ôöé                              
+                           Ôöé ÔÇó Runtime: 1.29.3                                      Ôöé            Ôöé                              
+                           Ôöé                                                        Ôöé            Ôöé                              
+                           Ôöé                                                        Ôöé            Ôöé                              
+                           Ôöé                                                        Ôöé            Ôöé                              
+
+
+Change base image
+  The list displays new recommended tags in descending order, where the top results are rated as most suitable.
+
+
+              Tag              Ôöé                        Details                         Ôöé    Pushed    Ôöé       Vulnerabilities        
+ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔö╝ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔö╝ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔö╝ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+   1-alpine-slim               Ôöé Benefits:                                              Ôöé 6 days ago   Ôöé    0C     0H     0M     2L   
+  Minor runtime version update Ôöé ÔÇó Same OS detected                                     Ôöé              Ôöé    -4    -18    -32     -3   
+  Also known as:               Ôöé ÔÇó Minor runtime version update                         Ôöé              Ôöé                              
+  ÔÇó 1.29.3-alpine-slim         Ôöé ÔÇó Image is smaller by 14 MB                            Ôöé              Ôöé                              
+  ÔÇó 1.29-alpine-slim           Ôöé ÔÇó Image contains 53 fewer packages                     Ôöé              Ôöé                              
+  ÔÇó alpine-slim                Ôöé ÔÇó Tag was pushed more recently                         Ôöé              Ôöé                              
+  ÔÇó alpine3.22-slim            Ôöé ÔÇó Image introduces no new vulnerability but removes 57 Ôöé              Ôöé                              
+  ÔÇó 1-alpine3.22-slim          Ôöé ÔÇó Tag is using slim variant                            Ôöé              Ôöé                              
+  ÔÇó mainline-alpine-slim       Ôöé ÔÇó 1-alpine-slim was pulled 215K times last month       Ôöé              Ôöé                              
+  ÔÇó 1.29-alpine3.22-slim       Ôöé                                                        Ôöé              Ôöé                              
+  ÔÇó 1.29.3-alpine3.22-slim     Ôöé Image details:                                         Ôöé              Ôöé                              
+  ÔÇó mainline-alpine3.22-slim   Ôöé ÔÇó Size: 5.6 MB                                         Ôöé              Ôöé                              
+                               Ôöé ÔÇó Flavor: alpine                                       Ôöé              Ôöé                              
+                               Ôöé ÔÇó Runtime: 1.29.3                                      Ôöé              Ôöé                              
+                               Ôöé                                                        Ôöé              Ôöé                              
+                               Ôöé                                                        Ôöé              Ôöé                              
+                               Ôöé                                                        Ôöé              Ôöé                              
+   1.28-alpine-slim            Ôöé Benefits:                                              Ôöé 2 months ago Ôöé    0C     0H     0M     2L   
+  Minor runtime version update Ôöé ÔÇó Same OS detected                                     Ôöé              Ôöé    -4    -18    -32     -3   
+  Also known as:               Ôöé ÔÇó Minor runtime version update                         Ôöé              Ôöé                              
+  ÔÇó 1.28.0-alpine-slim         Ôöé ÔÇó Image is smaller by 14 MB                            Ôöé              Ôöé                              
+  ÔÇó stable-alpine-slim         Ôöé ÔÇó Image contains 54 fewer packages                     Ôöé              Ôöé                              
+  ÔÇó 1.28-alpine3.21-slim       Ôöé ÔÇó Tag was pushed more recently                         Ôöé              Ôöé                              
+  ÔÇó 1.28.0-alpine3.21-slim     Ôöé ÔÇó Image introduces no new vulnerability but removes 57 Ôöé              Ôöé                              
+  ÔÇó stable-alpine3.21-slim     Ôöé ÔÇó Tag is using slim variant                            Ôöé              Ôöé                              
+                               Ôöé                                                        Ôöé              Ôöé                              
+                               Ôöé Image details:                                         Ôöé              Ôöé                              
+                               Ôöé ÔÇó Size: 5.4 MB                                         Ôöé              Ôöé                              
+                               Ôöé ÔÇó Flavor: alpine                                       Ôöé              Ôöé                              
+                               Ôöé ÔÇó Runtime: 1.28.0                                      Ôöé              Ôöé                              
+                               Ôöé                                                        Ôöé              Ôöé                              
+                               Ôöé                                                        Ôöé              Ôöé                              
+                               Ôöé                                                        Ôöé              Ôöé                              
+   1.28-alpine                 Ôöé Benefits:                                              Ôöé 6 months ago Ôöé    2C     2H     2M     3L   
+  Minor runtime version update Ôöé ÔÇó Same OS detected                                     Ôöé              Ôöé    -2    -16    -30     -2   
+  Also known as:               Ôöé ÔÇó Minor runtime version update                         Ôöé              Ôöé                              
+  ÔÇó 1.28.0-alpine              Ôöé ÔÇó Tag was pushed more recently                         Ôöé              Ôöé                              
+  ÔÇó stable-alpine              Ôöé ÔÇó Image has similar size                               Ôöé              Ôöé                              
+  ÔÇó 1.28-alpine3.21            Ôöé ÔÇó Image introduces no new vulnerability but removes 50 Ôöé              Ôöé                              
+  ÔÇó stable-alpine3.21          Ôöé ÔÇó Image contains similar number of packages            Ôöé              Ôöé                              
+  ÔÇó 1.28.0-alpine3.21          Ôöé                                                        Ôöé              Ôöé                              
+                               Ôöé Image details:                                         Ôöé              Ôöé                              
+                               Ôöé ÔÇó Size: 21 MB                                          Ôöé              Ôöé                              
+                               Ôöé ÔÇó Flavor: alpine                                       Ôöé              Ôöé                              
+                               Ôöé ÔÇó Runtime: 1.28.0                                      Ôöé              Ôöé                              
+                               Ôöé                                                        Ôöé              Ôöé                              
+                               Ôöé                                                        Ôöé              Ôöé                              
+                               Ôöé                                                        Ôöé              Ôöé                              
+

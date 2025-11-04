@@ -20,12 +20,13 @@ WORKDIR /app
 # Install system dependencies required for Python packages
 # gcc: For compiling Python packages with C extensions
 # postgresql-dev: For psycopg2 (PostgreSQL adapter)
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     g++ \
     libpq-dev \
     curl \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
 
 # Copy requirements first to leverage Docker layer caching
 # This means if requirements don't change, Docker reuses this layer
@@ -51,5 +52,6 @@ EXPOSE 5000
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:5000/health || exit 1
 
-# Command to run the application
-CMD ["python", "app.py"]
+# Command to run the application with Gunicorn for production
+# Using 4 workers and binding to all interfaces for Docker
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "4", "--timeout", "120", "--access-logfile", "-", "--error-logfile", "-", "app:app"]

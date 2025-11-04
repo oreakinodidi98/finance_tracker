@@ -1,0 +1,116 @@
+    i New version 1.18.4 available (installed version is 1.18.3) at https://github.com/docker/scout-cli
+    ...Storing image for indexing
+    v Image stored for indexing
+    ...Indexing
+    v Indexed 66 packages
+    ! failed to close image source C:\Users\OREAKI~1\AppData\Local\Temp\docker-scout\sha256\ba05c11fe977ed520354d744e145736c881d4a4a581718dbcd6eec266f822549\11466a2e-3ad2-4f4d-a2ad-fda30fb6feb9: 2 errors occurred:
+	* remove C:\Users\OREAKI~1\AppData\Local\Temp\stereoscope-3447442456\docker-tarball-image-3499081507\sha256: The process cannot access the file because it is being used by another process.
+	* remove C:\Users\OREAKI~1\AppData\Local\Temp\stereoscope-3447442456\docker-tarball-image-3499081507\sha256: The process cannot access the file because it is being used by another process.
+
+    ! failed to delete temporary image archive C:\Users\OREAKI~1\AppData\Local\Temp\docker-scout\sha256\ba05c11fe977ed520354d744e145736c881d4a4a581718dbcd6eec266f822549\11466a2e-3ad2-4f4d-a2ad-fda30fb6feb9: remove C:\Users\OREAKI~1\AppData\Local\Temp\docker-scout\sha256\ba05c11fe977ed520354d744e145736c881d4a4a581718dbcd6eec266f822549\11466a2e-3ad2-4f4d-a2ad-fda30fb6feb9: The process cannot access the file because it is being used by another process.    v 4 exceptions obtained
+    x Detected 3 vulnerable packages with a total of 13 vulnerabilities
+
+
+
+## Overview
+What's next:
+    View base image update recommendations ÔåÆ docker scout recommendations postgres:15-alpine
+
+
+                    Ôöé           Analyzed Image            
+ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔö╝ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+  Target            Ôöé  postgres:15-alpine                 
+    digest          Ôöé  ba05c11fe977                       
+    platform        Ôöé linux/amd64                         
+    vulnerabilities Ôöé    0C     4H     6M     2L     1?   
+    size            Ôöé 121 MB                              
+    packages        Ôöé 66                                  
+
+
+## Packages and Vulnerabilities
+
+   0C     4H     6M     0L  stdlib 1.24.6
+pkg:golang/stdlib@1.24.6
+
+    x HIGH CVE-2025-61725
+      https://scout.docker.com/v/CVE-2025-61725?s=golang&n=stdlib&t=golang&vr=%3C1.24.8
+      Affected range : <1.24.8  
+      Fixed version  : 1.24.8   
+    
+    x HIGH CVE-2025-61723
+      https://scout.docker.com/v/CVE-2025-61723?s=golang&n=stdlib&t=golang&vr=%3C1.24.8
+      Affected range : <1.24.8  
+      Fixed version  : 1.24.8   
+    
+    x HIGH CVE-2025-58188
+      https://scout.docker.com/v/CVE-2025-58188?s=golang&n=stdlib&t=golang&vr=%3C1.24.8
+      Affected range : <1.24.8  
+      Fixed version  : 1.24.8   
+    
+    x HIGH CVE-2025-58187
+      https://scout.docker.com/v/CVE-2025-58187?s=golang&n=stdlib&t=golang&vr=%3C1.24.9
+      Affected range : <1.24.9  
+      Fixed version  : 1.24.9   
+    
+    x MEDIUM CVE-2025-61724
+      https://scout.docker.com/v/CVE-2025-61724?s=golang&n=stdlib&t=golang&vr=%3C1.24.8
+      Affected range : <1.24.8  
+      Fixed version  : 1.24.8   
+    
+    x MEDIUM CVE-2025-58189
+      https://scout.docker.com/v/CVE-2025-58189?s=golang&n=stdlib&t=golang&vr=%3C1.24.8
+      Affected range : <1.24.8  
+      Fixed version  : 1.24.8   
+    
+    x MEDIUM CVE-2025-58186
+      https://scout.docker.com/v/CVE-2025-58186?s=golang&n=stdlib&t=golang&vr=%3C1.24.8
+      Affected range : <1.24.8  
+      Fixed version  : 1.24.8   
+    
+    x MEDIUM CVE-2025-58185
+      https://scout.docker.com/v/CVE-2025-58185?s=golang&n=stdlib&t=golang&vr=%3C1.24.8
+      Affected range : <1.24.8  
+      Fixed version  : 1.24.8   
+    
+    x MEDIUM CVE-2025-47912
+      https://scout.docker.com/v/CVE-2025-47912?s=golang&n=stdlib&t=golang&vr=%3C1.24.8
+      Affected range : <1.24.8  
+      Fixed version  : 1.24.8   
+    
+    x MEDIUM CVE-2025-58183
+      https://scout.docker.com/v/CVE-2025-58183?s=golang&n=stdlib&t=golang&vr=%3C1.24.8
+      Affected range : <1.24.8  
+      Fixed version  : 1.24.8   
+    
+
+   0C     0H     0M     2L  busybox 1.37.0-r19
+pkg:apk/alpine/busybox@1.37.0-r19?os_name=alpine&os_version=3.22
+
+    x LOW CVE-2025-46394
+      https://scout.docker.com/v/CVE-2025-46394?s=alpine&n=busybox&ns=alpine&t=apk&osn=alpine&osv=3.22&vr=%3C%3D1.37.0-r19
+      Affected range : <=1.37.0-r19  
+      Fixed version  : not fixed     
+    
+    x LOW CVE-2024-58251
+      https://scout.docker.com/v/CVE-2024-58251?s=alpine&n=busybox&ns=alpine&t=apk&osn=alpine&osv=3.22&vr=%3C%3D1.37.0-r19
+      Affected range : <=1.37.0-r19  
+      Fixed version  : not fixed     
+    
+
+   0C     0H     0M     0L     1?  lz4 1.10.0-r0
+pkg:apk/alpine/lz4@1.10.0-r0?os_name=alpine&os_version=3.22
+
+    x UNSPECIFIED CVE-2025-62813
+      https://scout.docker.com/v/CVE-2025-62813?s=alpine&n=lz4&ns=alpine&t=apk&osn=alpine&osv=3.22&vr=%3C%3D1.10.0-r0
+      Affected range : <=1.10.0-r0  
+      Fixed version  : not fixed    
+    
+
+
+13 vulnerabilities found in 3 packages
+  CRITICAL     0  
+  HIGH         4  
+  MEDIUM       6  
+  LOW          2  
+  UNSPECIFIED  1  
+
