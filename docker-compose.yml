@@ -32,9 +32,10 @@ services:
 
   # Backend API Service  
   backend:
-    build:
-      context: ./backend     # Build from backend folder
-      dockerfile: Dockerfile
+    # build:
+    #   context: ./backend     # Build from backend folder
+    #   dockerfile: Dockerfile
+    image: oreakinodidi/finance_tracker_backend:v1.0
     container_name: finance_tracker_backend
     restart: unless-stopped
     environment:
@@ -80,9 +81,10 @@ services:
 
   # Frontend Service
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    # build:
+    #   context: ./frontend
+    #   dockerfile: Dockerfile
+    image: oreakinodidi/finance_tracker_frontend:v1.0
     container_name: finance_tracker_frontend
     restart: unless-stopped
     ports:
