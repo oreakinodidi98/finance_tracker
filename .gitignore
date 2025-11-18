@@ -317,3 +317,6 @@ src/api/static/react/
 .env.sample
 .env
 *.env.sample
+k8s/secrets.yaml
+!k8s/secrets.yaml.template
+k8s/secret-provider.yaml
