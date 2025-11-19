@@ -512,6 +512,84 @@ docker-compose logs -f
 docker-compose down
 ```
 
+### Install ArgoCD
+
+# 1. Create ArgoCD namespace
+kubectl create namespace argocd
+
+# 2. Install ArgoCD
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+# 3. Wait for ArgoCD pods to be ready
+kubectl wait --for=condition=ready pod --all -n argocd --timeout=300s
+
+# 4. Get the initial admin password
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | ForEach-Object { [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($_)) }
+
+# 5. Expose ArgoCD server (choose ONE option below)
+
+## Option A: Port Forward (for testing)
+
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+
+- Access at: https://localhost:8080
+- Username: admin
+- Password: (from step 4)
+
+## Option B: LoadBalancer (for production)
+
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+
+Wait for external IP
+kubectl get svc argocd-server -n argocd -w
+Access at: https://<EXTERNAL-IP>
+
+## Option C: Ingress (recommended for production)
+
+1. First, install nginx-ingress controller if you don't have one
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.2/deploy/static/provider/cloud/deploy.yaml
+
+2. Create ArgoCD ingress
+@"
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-server-ingress
+  namespace: argocd
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: argocd.yourdomain.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: argocd-server
+            port:
+              name: https
+  tls:
+  - hosts:
+    - argocd.yourdomain.com
+    secretName: argocd-server-tls
+"@ | kubectl apply -f -
+
+## Install ArgoCD CLI 
+
+1. Download ArgoCD CLI for Windows
+Invoke-WebRequest -Uri https://github.com/argoproj/argo-cd/releases/latest/download/argocd-windows-amd64.exe -OutFile argocd.exe
+
+2. Move to a folder in your PATH
+Move-Item argocd.exe $env:USERPROFILE\bin\argocd.exe
+
+3. Login via CLI
+argocd login localhost:8080 --username admin --password <password-from-step-4> --insecure
+
 For production deployment with security hardening, see [SECURITY.md](SECURITY.md).
 
 ## 🔐 Security & Vulnerability Scanning
