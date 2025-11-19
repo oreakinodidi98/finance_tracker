@@ -320,3 +320,4 @@ src/api/static/react/
 k8s/secrets.yaml
 !k8s/secrets.yaml.template
 k8s/secret-provider.yaml
+k8s/
