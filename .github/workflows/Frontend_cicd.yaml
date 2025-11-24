@@ -40,7 +40,7 @@ jobs:
           git clone https://github.com/oreakinodidi98/finance_tracker_k8_ops.git
           cd finance_tracker_k8_ops/k8s
 
-          sed -i 's|image: oreakinodidi/finance_tracker_backend:.*|image: oreakinodidi/finance_tracker_backend:${{ github.sha }}|' deployment.yml
+          sed -i 's|image: oreakinodidi/finance_tracker_frontend:.*|image: oreakinodidi/finance_tracker_frontend:${{ github.sha }}|' deployment.yaml
 
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
