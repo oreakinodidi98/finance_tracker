@@ -1,0 +1,293 @@
+.analytics-page {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.analytics-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.analytics-header h1 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 2rem;
+}
+
+.period-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.period-selector label {
+  font-weight: 600;
+  color: #555;
+}
+
+.period-selector select {
+  padding: 8px 16px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: white;
+  transition: border-color 0.3s;
+}
+
+.period-selector select:hover {
+  border-color: #0088FE;
+}
+
+.period-selector select:focus {
+  outline: none;
+  border-color: #0088FE;
+}
+
+/* Summary Cards */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-icon {
+  font-size: 48px;
+  line-height: 1;
+}
+
+.card-content {
+  flex: 1;
+}
+
+.card-content h3 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-content .amount {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.card-content .sub-text {
+  margin: 4px 0 0 0;
+  font-size: 12px;
+  color: #999;
+}
+
+.income-card {
+  border-left: 4px solid #00C49F;
+}
+
+.expense-card {
+  border-left: 4px solid #FF8042;
+}
+
+.savings-card {
+  border-left: 4px solid #8884D8;
+}
+
+.transaction-card {
+  border-left: 4px solid #0088FE;
+}
+
+.amount.positive {
+  color: #00C49F;
+}
+
+.amount.negative {
+  color: #FF8042;
+}
+
+/* Charts Container */
+.charts-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.chart-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chart-card.wide {
+  grid-column: 1 / -1;
+}
+
+.chart-card h3 {
+  margin: 0 0 20px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Insights Section */
+.insights-section {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.insights-section h3 {
+  margin: 0 0 20px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.insights-cards {
+  display: grid;
+  gap: 16px;
+}
+
+.insight-card {
+  padding: 16px 20px;
+  border-radius: 8px;
+  background: #f8f9fa;
+  border-left: 4px solid #0088FE;
+}
+
+.insight-card p {
+  margin: 0;
+  color: #555;
+  line-height: 1.5;
+}
+
+.insight-card.positive {
+  background: #e8f5e9;
+  border-left-color: #00C49F;
+}
+
+.insight-card.positive p {
+  color: #2e7d32;
+}
+
+.insight-card.negative {
+  background: #ffebee;
+  border-left-color: #FF8042;
+}
+
+.insight-card.negative p {
+  color: #c62828;
+}
+
+.insight-card strong {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Loading and Error States */
+.loading,
+.error,
+.no-data {
+  text-align: center;
+  padding: 60px 20px;
+  font-size: 18px;
+  color: #666;
+}
+
+.error {
+  color: #d32f2f;
+}
+
+.error + button {
+  margin-top: 20px;
+  padding: 10px 24px;
+  background: #0088FE;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.error + button:hover {
+  background: #0066CC;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .charts-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .chart-card.wide {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .analytics-page {
+    padding: 16px;
+  }
+  
+  .analytics-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .summary-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .charts-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .card-content .amount {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .analytics-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .card {
+    padding: 16px;
+  }
+  
+  .card-icon {
+    font-size: 36px;
+  }
+  
+  .card-content .amount {
+    font-size: 20px;
+  }
+}

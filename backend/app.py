@@ -3,9 +3,11 @@ from config import app, db
 from models import User, Category, Transaction, Budget, Goal
 from datetime import datetime
 import asyncio
+from dotenv import load_dotenv
 # Routes to register and login users
 
-
+# Load environment variables from .env file
+load_dotenv()
 # routes to create, read, update, delete categories
 @app.route('/categories', methods=['GET'])
 ## get a list of all categories
@@ -254,6 +256,141 @@ def delete_goal(goal_id):
 
     return jsonify({'message': 'Savings Goal deleted successfully'}), 200
 # routes to get summary reports and analytics
+
+@app.route('/analytics', methods=['GET'])
+def get_analytics():
+    """Get spending analytics and insights"""
+    try:
+        from sqlalchemy import func, extract
+        from datetime import timedelta
+        
+        # Get query parameters for filtering
+        period = request.args.get('period', '30')  # Default last 30 days
+        user_id = request.args.get('user_id', 1)  # Default user_id 1
+        
+        # Calculate date range
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=int(period))
+        
+        # 1. Total spending and income
+        total_expenses = db.session.query(
+            func.sum(Transaction.amount)
+        ).filter(
+            Transaction.transaction_type == 'expense',
+            Transaction.user_id == user_id,
+            Transaction.transaction_date >= start_date
+        ).scalar() or 0
+        
+        total_income = db.session.query(
+            func.sum(Transaction.amount)
+        ).filter(
+            Transaction.transaction_type == 'income',
+            Transaction.user_id == user_id,
+            Transaction.transaction_date >= start_date
+        ).scalar() or 0
+        
+        # 2. Spending by category
+        spending_by_category = db.session.query(
+            Category.name,
+            Category.type,
+            func.sum(Transaction.amount).label('total')
+        ).join(
+            Transaction, Transaction.category_id == Category.id
+        ).filter(
+            Transaction.user_id == user_id,
+            Transaction.transaction_date >= start_date
+        ).group_by(
+            Category.name, Category.type
+        ).all()
+        
+        category_data = [
+            {
+                'category': cat.name,
+                'type': cat.type,
+                'amount': float(cat.total) if cat.total else 0
+            }
+            for cat in spending_by_category
+        ]
+        
+        # 3. Daily spending trend (last 30 days)
+        daily_spending = db.session.query(
+            func.date(Transaction.transaction_date).label('date'),
+            Transaction.transaction_type,
+            func.sum(Transaction.amount).label('total')
+        ).filter(
+            Transaction.user_id == user_id,
+            Transaction.transaction_date >= start_date
+        ).group_by(
+            func.date(Transaction.transaction_date),
+            Transaction.transaction_type
+        ).order_by(
+            func.date(Transaction.transaction_date)
+        ).all()
+        
+        trend_data = {}
+        for record in daily_spending:
+            date_str = record.date.strftime('%Y-%m-%d')
+            if date_str not in trend_data:
+                trend_data[date_str] = {'date': date_str, 'income': 0, 'expense': 0}
+            
+            if record.transaction_type == 'income':
+                trend_data[date_str]['income'] = float(record.total) if record.total else 0
+            else:
+                trend_data[date_str]['expense'] = float(record.total) if record.total else 0
+        
+        # 4. Transaction statistics
+        transaction_count = Transaction.query.filter(
+            Transaction.user_id == user_id,
+            Transaction.transaction_date >= start_date
+        ).count()
+        
+        avg_transaction = db.session.query(
+            func.avg(Transaction.amount)
+        ).filter(
+            Transaction.user_id == user_id,
+            Transaction.transaction_date >= start_date
+        ).scalar() or 0
+        
+        # 5. Top spending categories (top 5)
+        top_categories = db.session.query(
+            Category.name,
+            func.sum(Transaction.amount).label('total')
+        ).join(
+            Transaction, Transaction.category_id == Category.id
+        ).filter(
+            Transaction.user_id == user_id,
+            Transaction.transaction_type == 'expense',
+            Transaction.transaction_date >= start_date
+        ).group_by(
+            Category.name
+        ).order_by(
+            func.sum(Transaction.amount).desc()
+        ).limit(5).all()
+        
+        top_categories_data = [
+            {'category': cat.name, 'amount': float(cat.total) if cat.total else 0}
+            for cat in top_categories
+        ]
+        
+        return jsonify({
+            'summary': {
+                'total_expenses': float(total_expenses) if total_expenses else 0,
+                'total_income': float(total_income) if total_income else 0,
+                'net_savings': float(total_income - total_expenses) if (total_income and total_expenses) else 0,
+                'transaction_count': transaction_count,
+                'avg_transaction': float(avg_transaction) if avg_transaction else 0,
+                'period_days': int(period)
+            },
+            'spending_by_category': category_data,
+            'daily_trend': list(trend_data.values()),
+            'top_categories': top_categories_data
+        }), 200
+        
+    except Exception as e:
+        print(f"❌ Error in analytics endpoint: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
 
 # routes to get budgeting features
 

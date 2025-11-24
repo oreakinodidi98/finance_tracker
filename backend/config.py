@@ -3,7 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 #cors = cross origin resource sharing. Allowing frontend and backend to communicate.
 import os
+from dotenv import load_dotenv
 
+# Load environment variables from .env file
+load_dotenv()
 # initialize Flask app
 app = Flask(__name__)
 

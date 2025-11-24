@@ -6,7 +6,7 @@ on:
     paths:
       - 'backend/**'
       - 'Dockerfile'
-      #- '.github/workflows/Backend_cicd.yaml'
+      - '.github/workflows/Backend_cicd.yaml'
 
 jobs:
   build-and-deploy:
