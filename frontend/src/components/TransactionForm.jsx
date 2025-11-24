@@ -7,6 +7,23 @@ const [amount, setAmount] = useState(existingTransaction?.amount || "");
 const [transactionType, setTransactionType] = useState(existingTransaction?.transaction_type || "expense");
 const [transactionDate, setTransactionDate] = useState(existingTransaction?.transaction_date || "");
 const [categoryId, setCategoryId] = useState(existingTransaction?.category_id || "");
+const [categories, setCategories] = useState([]);
+
+  // Fetch categories on component mount
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('/api/categories');
+        if (response.ok) {
+          const data = await response.json();
+          setCategories(data.categories || []);
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   // Populate form with existing transaction data when editing
   useEffect(() => {
@@ -146,15 +163,19 @@ const [categoryId, setCategoryId] = useState(existingTransaction?.category_id ||
       </div>
 
       <div className="input-group">
-        <label>Category ID</label>
-        <input
-          type="number"
-          placeholder="Category ID"
+        <label>Category</label>
+        <select
           value={categoryId}
           onChange={(e) => setCategoryId(e.target.value)}
           required
-          min="1"
-        />
+        >
+          <option value="">Select a category</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name} ({category.type})
+            </option>
+          ))}
+        </select>
       </div>
 
       <button type="submit">

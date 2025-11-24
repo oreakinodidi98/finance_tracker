@@ -60,11 +60,18 @@ def create_transaction():
         
         print(f"Parsed date: {parsed_date}")
 
+        # Validate category exists
+        if category_id:
+            category = Category.query.get(category_id)
+            if not category:
+                return jsonify({'error': f'Category with id {category_id} does not exist'}), 400
+        else:
+            # Use default category or create one if none exists
+            category_id = 1
+
         new_transaction = Transaction(
-            #user_id=request.json.get('user_id'),
-            #category_id=request.json.get('category_id'),
             user_id=1,  # For now, hardcode user_id as 1
-            category_id=category_id or 1,  # Default category_id if not provided
+            category_id=category_id,
             description=description or 'No description',
             amount=amount,
             transaction_type=transaction_type,
@@ -76,15 +83,15 @@ def create_transaction():
         db.session.commit()
         print("Transaction saved successfully")
         return jsonify({'message': 'Transaction created successfully', 'transaction': new_transaction.to_json()}), 201
+    except ValueError as ve:
+        print(f"ValueError: {ve}")
+        db.session.rollback()
+        return jsonify({'error': f'Invalid data format: {str(ve)}'}), 400
     except Exception as e:
         print(f"Exception: {e}")
         print(f"Exception type: {type(e)}")
         db.session.rollback()
         return jsonify({'error': str(e)}), 400
-    except ValueError as ve:
-        print(f"ValueError: {ve}")
-        db.session.rollback()
-        return jsonify({'error': f'Invalid data format: {str(ve)}'}), 400
 
    
 
