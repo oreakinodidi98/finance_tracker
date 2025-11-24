@@ -16,6 +16,204 @@ def get_categories():
     json_categories = map(lambda x: x.to_json(), categories)
     return jsonify({"categories": list(json_categories)}), 200
 
+@app.route('/categories/stats', methods=['GET'])
+def get_category_stats():
+    """Get category statistics with spending information"""
+    try:
+        from sqlalchemy import func
+        from datetime import timedelta
+        
+        # Get query parameters
+        period = request.args.get('period', '30')  # Default last 30 days
+        user_id = request.args.get('user_id', 1)  # Default user_id 1
+        
+        # Calculate date range
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=int(period))
+        
+        # Get all categories with their spending stats
+        category_stats = db.session.query(
+            Category.id,
+            Category.name,
+            Category.type,
+            Category.description,
+            func.coalesce(func.sum(Transaction.amount), 0).label('total_spent'),
+            func.count(Transaction.id).label('transaction_count'),
+            func.coalesce(func.avg(Transaction.amount), 0).label('avg_transaction')
+        ).outerjoin(
+            Transaction,
+            (Transaction.category_id == Category.id) & 
+            (Transaction.user_id == user_id) &
+            (Transaction.transaction_date >= start_date)
+        ).filter(
+            Category.user_id == user_id
+        ).group_by(
+            Category.id, Category.name, Category.type, Category.description
+        ).all()
+        
+        # Get recent transactions per category
+        recent_transactions = {}
+        for stat in category_stats:
+            recent = Transaction.query.filter(
+                Transaction.category_id == stat.id,
+                Transaction.user_id == user_id,
+                Transaction.transaction_date >= start_date
+            ).order_by(
+                Transaction.transaction_date.desc()
+            ).limit(3).all()
+            
+            recent_transactions[stat.id] = [t.to_json() for t in recent]
+        
+        # Format response
+        categories_data = []
+        for stat in category_stats:
+            categories_data.append({
+                'id': stat.id,
+                'name': stat.name,
+                'type': stat.type,
+                'description': stat.description,
+                'total_spent': float(stat.total_spent) if stat.total_spent else 0,
+                'transaction_count': stat.transaction_count,
+                'avg_transaction': float(stat.avg_transaction) if stat.avg_transaction else 0,
+                'recent_transactions': recent_transactions.get(stat.id, [])
+            })
+        
+        return jsonify({
+            'categories': categories_data,
+            'period_days': int(period)
+        }), 200
+        
+    except Exception as e:
+        print(f"❌ Error in category stats endpoint: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/categories/seed', methods=['POST'])
+def seed_categories():
+    """Create default categories if they don't exist"""
+    try:
+        user_id = request.json.get('user_id', 1) if request.json else 1
+        
+        default_categories = [
+            {'name': 'Groceries', 'type': 'expense', 'description': 'Food and household items'},
+            {'name': 'Transportation', 'type': 'expense', 'description': 'Gas, public transit, parking'},
+            {'name': 'Utilities', 'type': 'expense', 'description': 'Electric, water, internet, phone'},
+            {'name': 'Rent/Mortgage', 'type': 'expense', 'description': 'Monthly housing payment'},
+            {'name': 'Healthcare', 'type': 'expense', 'description': 'Medical, dental, prescriptions'},
+            {'name': 'Entertainment', 'type': 'expense', 'description': 'Movies, games, hobbies'},
+            {'name': 'Dining Out', 'type': 'expense', 'description': 'Restaurants and takeout'},
+            {'name': 'Shopping', 'type': 'expense', 'description': 'Clothing, electronics, misc'},
+            {'name': 'Insurance', 'type': 'expense', 'description': 'Health, car, home insurance'},
+            {'name': 'Education', 'type': 'expense', 'description': 'Tuition, books, courses'},
+            {'name': 'Salary', 'type': 'income', 'description': 'Monthly salary/wages'},
+            {'name': 'Freelance', 'type': 'income', 'description': 'Side gig earnings'},
+            {'name': 'Investments', 'type': 'income', 'description': 'Dividends, interest'},
+            {'name': 'Other Income', 'type': 'income', 'description': 'Miscellaneous income'},
+        ]
+        
+        created_count = 0
+        for cat_data in default_categories:
+            # Check if category already exists
+            existing = Category.query.filter_by(
+                name=cat_data['name'],
+                user_id=user_id
+            ).first()
+            
+            if not existing:
+                new_category = Category(
+                    user_id=user_id,
+                    name=cat_data['name'],
+                    type=cat_data['type'],
+                    description=cat_data['description']
+                )
+                db.session.add(new_category)
+                created_count += 1
+        
+        db.session.commit()
+        
+        return jsonify({
+            'message': f'Successfully created {created_count} categories',
+            'created_count': created_count
+        }), 201
+        
+    except Exception as e:
+        db.session.rollback()
+        print(f"❌ Error seeding categories: {e}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/categories/create', methods=['POST'])
+def create_category():
+    """Create a new custom category"""
+    try:
+        if not request.json:
+            return jsonify({'error': 'Request must contain JSON data'}), 400
+        
+        name = request.json.get('name')
+        category_type = request.json.get('type')
+        description = request.json.get('description', '')
+        user_id = request.json.get('user_id', 1)
+        
+        if not name or not category_type:
+            return jsonify({'error': 'Name and type are required'}), 400
+        
+        if category_type not in ['income', 'expense']:
+            return jsonify({'error': 'Type must be either "income" or "expense"'}), 400
+        
+        # Check if category with same name already exists for this user
+        existing = Category.query.filter_by(
+            name=name,
+            user_id=user_id
+        ).first()
+        
+        if existing:
+            return jsonify({'error': f'Category "{name}" already exists'}), 400
+        
+        new_category = Category(
+            user_id=user_id,
+            name=name,
+            type=category_type,
+            description=description
+        )
+        
+        db.session.add(new_category)
+        db.session.commit()
+        
+        return jsonify({
+            'message': 'Category created successfully',
+            'category': new_category.to_json()
+        }), 201
+        
+    except Exception as e:
+        db.session.rollback()
+        print(f"❌ Error creating category: {e}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/categories/delete/<int:category_id>', methods=['DELETE'])
+def delete_category(category_id):
+    """Delete a category"""
+    try:
+        category = Category.query.get(category_id)
+        if not category:
+            return jsonify({'error': 'Category not found'}), 404
+        
+        # Check if category has transactions
+        transaction_count = Transaction.query.filter_by(category_id=category_id).count()
+        if transaction_count > 0:
+            return jsonify({
+                'error': f'Cannot delete category with {transaction_count} existing transactions. Please reassign or delete those transactions first.'
+            }), 400
+        
+        db.session.delete(category)
+        db.session.commit()
+        
+        return jsonify({'message': 'Category deleted successfully'}), 200
+        
+    except Exception as e:
+        db.session.rollback()
+        print(f"❌ Error deleting category: {e}")
+        return jsonify({'error': str(e)}), 500
+
 
 
 # routes to create, read, update, delete transactions

@@ -35,7 +35,7 @@ class Category(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    name = db.Column(db.String(50), unique=True, nullable=False)
+    name = db.Column(db.String(50), nullable=False)
     type = db.Column(db.String(10), nullable=False)  # 'income' or 'expense'
     description = db.Column(db.String(200), nullable=True)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
