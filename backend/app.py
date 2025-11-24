@@ -95,6 +95,23 @@ def seed_categories():
     try:
         user_id = request.json.get('user_id', 1) if request.json else 1
         
+        # Check if user exists, if not create a default user
+        user = User.query.get(user_id)
+        if not user:
+            # Create a default test user
+            default_user = User(
+                id=1,
+                email='demo@financetracker.com',
+                password='demo123',  # In production, this should be hashed
+                username='demo',
+                first_name='Demo',
+                last_name='User',
+                currency='GBP'
+            )
+            db.session.add(default_user)
+            db.session.commit()
+            print(f"✅ Created default user with ID: {user_id}")
+        
         default_categories = [
             {'name': 'Groceries', 'type': 'expense', 'description': 'Food and household items'},
             {'name': 'Transportation', 'type': 'expense', 'description': 'Gas, public transit, parking'},
