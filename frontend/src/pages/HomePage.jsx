@@ -20,9 +20,9 @@ const HomePage = () => {
       
       // Fetch all required data in parallel
       const [transactionsRes, goalsRes, categoriesRes] = await Promise.all([
-        fetch('http://localhost:5000/transactions'),
-        fetch('http://localhost:5000/goals'),
-        fetch('http://localhost:5000/categories')
+        fetch('/api/transactions'),
+        fetch('/api/goals'),
+        fetch('/api/categories')
       ]);
 
       // Check if responses are ok

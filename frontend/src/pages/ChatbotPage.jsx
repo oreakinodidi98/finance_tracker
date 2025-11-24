@@ -27,7 +27,7 @@ const ChatbotPage = () => {
     try {
       if (isRagEnabled) {
         // Try to use the RAG agent through the backend
-        const response = await fetch('http://localhost:5000/chat', {
+        const response = await fetch('/api/chat', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

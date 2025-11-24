@@ -63,8 +63,8 @@ const [status, setStatus] = useState(existingGoal?.status || "");
     // Choose endpoint based on whether we're editing or creating
     const isEditing = existingGoal && existingGoal.id;
     const url = isEditing 
-      ? `http://localhost:5000/update_goal/${existingGoal.id}`
-      : 'http://localhost:5000/create_goal';
+      ? `/api/update_goal/${existingGoal.id}`
+      : '/api/create_goal';
 
     const options = {
         method: isEditing ? 'PATCH' : 'POST',

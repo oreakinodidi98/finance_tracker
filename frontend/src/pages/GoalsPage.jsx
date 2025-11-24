@@ -17,7 +17,7 @@ function GoalsPage() {
    // Function to fetch goals from backend
   const fetchGoals = async () => {
     try {
-      const response = await fetch('http://localhost:5000/goals')
+      const response = await fetch('/api/goals')
       const data = await response.json()
       setGoals(data.goals || [])
       console.log(data.goals)
@@ -73,7 +73,7 @@ function GoalsPage() {
   const deleteGoal = async (goalId) => {
     if (window.confirm('Are you sure you want to delete this goal?')) {
       try {
-        const response = await fetch(`http://localhost:5000/delete_goal/${goalId}`, {
+        const response = await fetch(`/api/delete_goal/${goalId}`, {
           method: 'DELETE'
         });
         

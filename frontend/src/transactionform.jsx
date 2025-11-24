@@ -63,8 +63,8 @@ const [categoryId, setCategoryId] = useState(existingTransaction?.category_id ||
     // Choose endpoint based on whether we're editing or creating
     const isEditing = existingTransaction && existingTransaction.id;
     const url = isEditing 
-      ? `http://localhost:5000/update_transaction/${existingTransaction.id}`
-      : 'http://localhost:5000/create_transaction';
+      ? `/api/update_transaction/${existingTransaction.id}`
+      : '/api/create_transaction';
 
     const options = {
         method: isEditing ? 'PATCH' : 'POST',

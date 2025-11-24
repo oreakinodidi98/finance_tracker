@@ -18,7 +18,7 @@ function TransactionsPage() {
   // Function to fetch transactions from backend
   const fetchTransactions = async () => {
     try {
-      const response = await fetch('http://localhost:5000/transactions')
+      const response = await fetch('/api/transactions')
       const data = await response.json()
       setTransactions(data.transactions || [])
       console.log(data.transactions)
@@ -70,7 +70,7 @@ function TransactionsPage() {
   const deleteTransaction = async (transactionId) => {
     if (window.confirm('Are you sure you want to delete this transaction?')) {
       try {
-        const response = await fetch(`http://localhost:5000/delete_transaction/${transactionId}`, {
+        const response = await fetch(`/api/delete_transaction/${transactionId}`, {
           method: 'DELETE'
         });
         
