@@ -45,6 +45,6 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
           git add .
-          git commit -m "Update backend image tags to ${{ github.sha }}"
-          git push @github.com/oreakinodidi98/finance_tracker_k8_ops.git">https://${PAT}@github.com/oreakinodidi98/finance_tracker_k8_ops.git main
+          git commit -m "Update frontend image tags to ${{ github.sha }}"
+          git push https://${PAT}@github.com/oreakinodidi98/finance_tracker_k8_ops.git main
           
