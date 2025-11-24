@@ -28,10 +28,10 @@ jobs:
       - name: Build and push the docker image
         uses: docker/build-push-action@v4
         with:
-          context: .
-          file: Dockerfile
+          context: ./frontend
+          file: ./frontend/Dockerfile
           push: true
-          tags: oreakinodidi/finance_tracker_backend:${{ github.sha }}
+          tags: oreakinodidi/finance_tracker_frontend:${{ github.sha }}
           
       - name: Clone finance_tracker_k8_ops repo, update image tags, and push tags
         env:
