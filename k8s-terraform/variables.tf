@@ -2,7 +2,7 @@
 variable "resourcegroup" {
   description = "value for resourcegroup"
   type        = string
-  default     = "tf_aks_mod"
+  default     = "tf_rg_financetracker"
 }
 variable "location" {
   description = "value for location"
@@ -26,16 +26,16 @@ variable "environment" {
 variable "kv_name" {
   description = "Name of the Key Vault"
   type        = string
-  default     = "tfkeyvaultwiz"
+  default     = "tfkeyvaultfinancetracker"
 }
 #################### AKS Variables ####################
 variable "aks_cluster_name" {
   type    = string
-  default = "aks-terraform-mod"
+  default = "aks-terraform-financetracker"
 }
 variable "acr_name" {
   type    = string
-  default = "oatfmod01"
+  default = "oatftracker01"
 }
 variable "system_node_count" {
   description = "The number of system nodes for the AKS cluster"
